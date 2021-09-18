@@ -6,19 +6,37 @@ public class TicTacToeGame {
 	static final Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		
+
 		System.out.println("Welcome to TicTacToe Game!");
-		for (int index = 1; index < board.length; index++) {
-			board[index] = ' ';
-		}
-		getInput("Player");
-		getInput("Computer");
+		boardCreation();
+		char userLetter = getInput();
+		char computerLetter = userLetter == 'X' ? 'O' : 'X';
+		displayBoard();
 	}
-	
-	public static char getInput(String player) {
-		System.out.println("");
-		System.out.print("Enter the "+ player +" letter (X or O): ");
-		char input = scanner.next().toUpperCase().charAt(0);
-		return input == 'X'? 'X':'O';
+
+	public static void boardCreation() {
+
+		board = new char[10];
+		for (int index = 1; index < board.length; index++)
+			board[index] = ' ';
+	}
+
+	public static char getInput() {
+
+		System.out.print("Enter the letter (X or O): ");
+		return scanner.next().toUpperCase().charAt(0);
+	}
+
+	private static void displayBoard() {
+
+		for (int i = 1; i < 10; i++) {
+
+			System.out.print(" | " + i);
+			if (i % 3 == 0) {
+				System.out.println(" | ");
+			}
+
+		}
+
 	}
 }
