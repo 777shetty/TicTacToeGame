@@ -2,19 +2,24 @@ package com.bridgelabz.tictactoegame;
 import java.util.Scanner;
 
 public class TicTacToeGame {
-	static char board[] = new char[10];
+	static char board[];
 	static final Scanner scanner = new Scanner(System.in);
+	static char userLetter, computerLetter;
+	static Scanner scan = new Scanner(System.in);
+	static int userNumber;
 
 	public static void main(String[] args) {
 
 		System.out.println("Welcome to TicTacToe Game!");
-		boardCreation();
-		char userLetter = getInput();
-		char computerLetter = userLetter == 'X' ? 'O' : 'X';
+		createBoard();
+		userLetter = getInput();
+		computerLetter = userLetter == 'X' ? 'O' : 'X';
 		displayBoard();
+		move();
+		
 	}
 
-	public static void boardCreation() {
+	public static void createBoard() {
 
 		board = new char[10];
 		for (int index = 1; index < board.length; index++)
@@ -28,15 +33,21 @@ public class TicTacToeGame {
 	}
 
 	private static void displayBoard() {
-
-		for (int i = 1; i < 10; i++) {
-
-			System.out.print(" | " + i);
-			if (i % 3 == 0) {
-				System.out.println(" | ");
+		
+		for (int rowIndex = 0; rowIndex < 3; rowIndex++) {
+			for (int columnIndex = 0; columnIndex < 3 ; columnIndex++) {
+			System.out.print("| " + board[rowIndex+columnIndex+1]+" ");
 			}
-
+			System.out.println("| ");
 		}
-
+	}
+	private static void move() {
+		System.out.println("\nEnter a location on board to make the mark (1-9):\n");
+		userNumber = scan.nextInt();
+		if (userNumber < 1 || userNumber > 9) {
+			displayBoard();
+			System.out.println("Your input is Invalid");
+			move();
+		}
 	}
 }
