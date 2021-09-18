@@ -5,7 +5,6 @@ public class TicTacToeGame {
 	static char board[];
 	static final Scanner scanner = new Scanner(System.in);
 	static char userLetter, computerLetter;
-	static Scanner scan = new Scanner(System.in);
 	static int userNumber;
 
 	public static void main(String[] args) {
@@ -16,7 +15,7 @@ public class TicTacToeGame {
 		computerLetter = userLetter == 'X' ? 'O' : 'X';
 		displayBoard();
 		move();
-		
+		moveIfLocationValid();
 	}
 
 	public static void createBoard() {
@@ -36,18 +35,31 @@ public class TicTacToeGame {
 		
 		for (int rowIndex = 0; rowIndex < 3; rowIndex++) {
 			for (int columnIndex = 0; columnIndex < 3 ; columnIndex++) {
-			System.out.print("| " + board[rowIndex+columnIndex+1]+" ");
+			System.out.print("| " + board[(rowIndex*3)+columnIndex+1]+" ");
 			}
 			System.out.println("| ");
 		}
 	}
 	private static void move() {
-		System.out.println("\nEnter a location on board to make the mark (1-9):\n");
-		userNumber = scan.nextInt();
+		System.out.print("\nEnter a location on board to make the mark (1-9): ");
+		userNumber = scanner.nextInt();
 		if (userNumber < 1 || userNumber > 9) {
 			displayBoard();
 			System.out.println("Your input is Invalid");
 			move();
+		}
+	}
+	private static void moveIfLocationValid() {
+		if (board[userNumber] == 'X' || board[userNumber] == 'O') {
+			displayBoard();
+			System.out.println("Number which is selected is not free");
+			move();
+			moveIfLocationValid();
+		} else {
+			board[userNumber] = userLetter;
+			System.out.println(userLetter + " is marked at location " + userNumber);
+			displayBoard();
+
 		}
 	}
 }
