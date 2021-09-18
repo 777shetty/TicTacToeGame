@@ -16,6 +16,11 @@ public class TicTacToeGame {
 		displayBoard();
 		move();
 		moveIfLocationValid();
+		if(whoPlaysFirst()) {
+			System.out.println("Won Toss! User plays first.");
+		} else {
+			System.out.println("Lost Toss! Computer plays first.");
+		}
 	}
 
 	public static void createBoard() {
@@ -31,7 +36,7 @@ public class TicTacToeGame {
 		return scanner.next().toUpperCase().charAt(0);
 	}
 
-	private static void displayBoard() {
+	public static void displayBoard() {
 		
 		for (int rowIndex = 0; rowIndex < 3; rowIndex++) {
 			for (int columnIndex = 0; columnIndex < 3 ; columnIndex++) {
@@ -40,7 +45,7 @@ public class TicTacToeGame {
 			System.out.println("| ");
 		}
 	}
-	private static void move() {
+	public static void move() {
 		System.out.print("\nEnter a location on board to make the mark (1-9): ");
 		userNumber = scanner.nextInt();
 		if (userNumber < 1 || userNumber > 9) {
@@ -49,7 +54,7 @@ public class TicTacToeGame {
 			move();
 		}
 	}
-	private static void moveIfLocationValid() {
+	public static void moveIfLocationValid() {
 		if (board[userNumber] == 'X' || board[userNumber] == 'O') {
 			displayBoard();
 			System.out.println("Number which is selected is not free");
@@ -62,4 +67,10 @@ public class TicTacToeGame {
 
 		}
 	}
+	public static boolean whoPlaysFirst() {
+		System.out.print("\nEnter heads (0) or tails (1): ");
+		return (scanner.nextInt()==(Math.random()*10)%2); 
+		
+	}
+	
 }
