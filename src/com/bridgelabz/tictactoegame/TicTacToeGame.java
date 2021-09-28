@@ -1,6 +1,6 @@
 package com.bridgelabz.tictactoegame;
 
-import java.util.Iterator;
+
 import java.util.Scanner;
 
 public class TicTacToeGame {
@@ -27,9 +27,8 @@ public class TicTacToeGame {
 			System.out.println("Lost Toss! Computer plays first.");
 		}
 		winningMove(userLetter);
-		for (boolean val : moves) {
-			System.out.println(val);
-		}
+		blockingMove();
+		nextPossibleMoves();
 	}
 
 	public static void createBoard() {
@@ -71,14 +70,13 @@ public class TicTacToeGame {
 		move();
 		if (board[userNumber] == 'X' || board[userNumber] == 'O') {
 			displayBoard();
-			System.out.println(userNumber + "Number which is selected is not free");
+			System.out.println("Number which is selected is not free");
 			moveIfLocationValid();
 		} else {
 			board[userNumber] = userLetter;
 			System.out.println(userLetter + " is marked at location " + userNumber);
 			displayBoard(); 
 			checkWinner();
-			blockingMove();
 		}
 
 	}
@@ -130,5 +128,13 @@ public class TicTacToeGame {
 	}
 	public static void blockingMove() {
 		winningMove(userLetter);
+	}
+	public static void nextPossibleMoves() {
+		int nextMoves[] = {1,3,7,8};
+		for (int index = 0; index < nextMoves.length; index++) {
+			if(board[index]==' ') {
+				moves[index] = true;
+			}
+		}
 	}
 }
