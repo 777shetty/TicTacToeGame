@@ -1,6 +1,5 @@
 package com.bridgelabz.tictactoegame;
 
-
 import java.util.Scanner;
 
 public class TicTacToeGame {
@@ -29,6 +28,8 @@ public class TicTacToeGame {
 		winningMove(userLetter);
 		blockingMove();
 		nextPossibleMoves();
+		nextPossibleCentreMove();
+		nextPossibleRemainingMoves();
 	}
 
 	public static void createBoard() {
@@ -130,7 +131,23 @@ public class TicTacToeGame {
 		winningMove(userLetter);
 	}
 	public static void nextPossibleMoves() {
-		int nextMoves[] = {1,3,7,8};
+		int nextMoves[] = {1,3,7,9};
+		for (int index = 0; index < nextMoves.length; index++) {
+			if(board[index]==' ') {
+				moves[index] = true;
+			}
+		}
+	}
+	public static void nextPossibleCentreMove() {
+		int nextMoves[] = {5};
+		for (int index = 0; index < nextMoves.length; index++) {
+			if(board[index]==' ') {
+				moves[index] = true;
+			}
+		}
+	}
+	public static void nextPossibleRemainingMoves() {
+		int nextMoves[] = {2,4,6,8};
 		for (int index = 0; index < nextMoves.length; index++) {
 			if(board[index]==' ') {
 				moves[index] = true;
