@@ -1,4 +1,5 @@
 package com.bridgelabz.tictactoegame;
+
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -75,8 +76,9 @@ public class TicTacToeGame {
 		} else {
 			board[userNumber] = userLetter;
 			System.out.println(userLetter + " is marked at location " + userNumber);
-			displayBoard();
+			displayBoard(); 
 			checkWinner();
+			blockingMove();
 		}
 
 	}
@@ -92,9 +94,9 @@ public class TicTacToeGame {
 			String line = "";
 			for (int index = 0; index < 3; index++)
 				line += board[winningStates[state][index]];
-			if (line.equals(Character.toString(userLetter).repeat(3))) {
+			if (line.equals(Character.toString(userLetter))) {
 				return "User";
-			} else if (line.equals(Character.toString(computerLetter).repeat(3))) {
+			} else if (line.equals(Character.toString(computerLetter))) {
 				return "Computer";
 			}
 		}
@@ -106,6 +108,8 @@ public class TicTacToeGame {
                 return "draw";
             }
         }
+		return null;
+
 	}
 
 	public static void winningMove(char letter) {
@@ -121,5 +125,10 @@ public class TicTacToeGame {
 				}
 			}
 		}
+
+
+	}
+	public static void blockingMove() {
+		winningMove(userLetter);
 	}
 }
