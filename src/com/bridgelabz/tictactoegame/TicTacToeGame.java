@@ -1,4 +1,5 @@
 package com.bridgelabz.tictactoegame;
+
 import java.util.Scanner;
 
 public class TicTacToeGame {
@@ -13,26 +14,52 @@ public class TicTacToeGame {
 
 	public static void main(String[] args) {
 
+		boolean keepPlaying = true;
 		System.out.println("Welcome to TicTacToe Game!");
-		createBoard();
-		userLetter = getInput();
-		computerLetter = userLetter == 'X' ? 'O' : 'X';
-		displayBoard();
-		if (tossingOutcome()) {
-			System.out.println("Won Toss! User plays first.");
-		} else {
-			System.out.println("Lost Toss! Computer plays first.");
-		}
+		while (keepPlaying) {
+			createBoard();
+			userLetter = getInput();
+			computerLetter = userLetter == 'X' ? 'O' : 'X';
+			System.out.println(computerLetter);
+			displayBoard();
+			if (tossingOutcome()) {
+				System.out.println("Won Toss! User plays first.");
+				while (true) {
+					playersTurn();
+					if (checkWinner() != null) {
+						break;
+					}
+					computersTurn();
+					if (checkWinner() != null) {
+						break;
+					}
+				}
+			} else {
+				System.out.println("Lost Toss! Computer plays first.");
+				while (true) {
 
-		while (true) {
-			playersTurn();
-			if (checkWinner() != null) {
-				break;
+					computersTurn();
+
+					if (checkWinner() != null) {
+						break;
+					}
+					playersTurn();
+
+					if (checkWinner() != null) {
+						break;
+					}
+				}
 			}
-			computersTurn();
-			if (checkWinner() != null) {
-				break;
+			String result = checkWinner();
+			if (result.equals("User")) {
+				System.out.println("You won the game! Congrats");
+			} else if (result.equals("draw")) {
+				System.out.println("Draw match!");
+			} else {
+				System.out.println("Computer won the game!");
 			}
+			System.out.println("Play another Tic Tac Toe Game? (Y/N)");
+			keepPlaying = scanner.next().toUpperCase().charAt(0) == 'Y' ? true : false;
 		}
 
 	}
@@ -43,7 +70,7 @@ public class TicTacToeGame {
 	}
 
 	public static void computersTurn() {
-		winningMove(userLetter);
+		winningMove(computerLetter);
 		moveFound = setComputerMove();
 		if (moveFound == false) {
 			blockingMove();
@@ -67,13 +94,13 @@ public class TicTacToeGame {
 
 	public static void resetMoves() {
 
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < 10; i++) {
 			moves[i] = false;
 		}
 	}
 
 	public static boolean setComputerMove() {
-		for (int index = 0; index < moves.length; index++) {
+		for (int index = 1; index < 10; index++) {
 			if (moves[index] == true) {
 				userNumber = index;
 				board[userNumber] = computerLetter;
@@ -162,10 +189,9 @@ public class TicTacToeGame {
 	}
 
 	public static void winningMove(char letter) {
-		int combinationOfThreeItems[][] = { { 0, 1, 2 }, { 1, 0, 2 }, { 1, 2, 0 } };
+		int combinationOfThreeItems[][] = { { 0, 1, 2 }, { 2, 0, 1 }, { 1, 2, 0 } };
 		for (int state = 0; state < winningStates.length; state++) {
 			for (int nthCombination = 0; nthCombination < combinationOfThreeItems.length; nthCombination++) {
-
 				if (board[winningStates[state][combinationOfThreeItems[nthCombination][0]]] == letter
 						&& board[winningStates[state][combinationOfThreeItems[nthCombination][1]]] == letter
 						&& board[winningStates[state][combinationOfThreeItems[nthCombination][2]]] == ' ') {
@@ -178,10 +204,12 @@ public class TicTacToeGame {
 	}
 
 	public static void blockingMove() {
+
 		winningMove(userLetter);
 	}
 
 	public static void nextPossibleMoves() {
+
 		int nextMoves[] = { 1, 3, 7, 9 };
 		for (int index = 0; index < nextMoves.length; index++) {
 			if (board[nextMoves[index]] == ' ') {
@@ -191,6 +219,7 @@ public class TicTacToeGame {
 	}
 
 	public static void nextPossibleCentreMove() {
+
 		int nextMoves[] = { 5 };
 		for (int index = 0; index < nextMoves.length; index++) {
 			if (board[nextMoves[index]] == ' ') {
@@ -200,6 +229,7 @@ public class TicTacToeGame {
 	}
 
 	public static void nextPossibleRemainingMoves() {
+
 		int nextMoves[] = { 2, 4, 6, 8 };
 		for (int index = 0; index < nextMoves.length; index++) {
 			if (board[nextMoves[index]] == ' ') {
