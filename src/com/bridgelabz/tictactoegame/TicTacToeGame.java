@@ -1,5 +1,4 @@
 package com.bridgelabz.tictactoegame;
-
 import java.util.Scanner;
 
 public class TicTacToeGame {
@@ -8,6 +7,7 @@ public class TicTacToeGame {
 	static char userLetter, computerLetter;
 	static int userNumber;
 	static boolean moves[];
+	static boolean moveFound = false;
 	static int winningStates[][] = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 }, { 1, 4, 7 }, { 2, 5, 8 }, { 3, 6, 9 },
 			{ 1, 5, 9 }, { 3, 5, 7 } };
 
@@ -18,18 +18,70 @@ public class TicTacToeGame {
 		userLetter = getInput();
 		computerLetter = userLetter == 'X' ? 'O' : 'X';
 		displayBoard();
-		moveIfLocationValid();
-		moveIfLocationValid();
 		if (tossingOutcome()) {
 			System.out.println("Won Toss! User plays first.");
 		} else {
 			System.out.println("Lost Toss! Computer plays first.");
 		}
+
+		while (true) {
+			playersTurn();
+			if (checkWinner() != null) {
+				break;
+			}
+			computersTurn();
+			if (checkWinner() != null) {
+				break;
+			}
+		}
+
+	}
+
+	public static void playersTurn() {
+		moveIfLocationValid();
+
+	}
+
+	public static void computersTurn() {
 		winningMove(userLetter);
-		blockingMove();
-		nextPossibleMoves();
-		nextPossibleCentreMove();
-		nextPossibleRemainingMoves();
+		moveFound = setComputerMove();
+		if (moveFound == false) {
+			blockingMove();
+			moveFound = setComputerMove();
+			if (moveFound == false) {
+				nextPossibleMoves();
+				moveFound = setComputerMove();
+				if (moveFound == false) {
+					nextPossibleCentreMove();
+					moveFound = setComputerMove();
+					if (moveFound == false) {
+						nextPossibleRemainingMoves();
+					}
+				}
+			}
+		}
+		System.out.println(computerLetter + " is marked at location " + userNumber);
+		displayBoard();
+		resetMoves();
+	}
+
+	public static void resetMoves() {
+
+		for (int i = 0; i < 9; i++) {
+			moves[i] = false;
+		}
+	}
+
+	public static boolean setComputerMove() {
+		for (int index = 0; index < moves.length; index++) {
+			if (moves[index] == true) {
+				userNumber = index;
+				board[userNumber] = computerLetter;
+				return true;
+
+			}
+		}
+		return false;
 	}
 
 	public static void createBoard() {
@@ -76,8 +128,7 @@ public class TicTacToeGame {
 		} else {
 			board[userNumber] = userLetter;
 			System.out.println(userLetter + " is marked at location " + userNumber);
-			displayBoard(); 
-			checkWinner();
+			displayBoard();
 		}
 
 	}
@@ -100,13 +151,12 @@ public class TicTacToeGame {
 			}
 		}
 		for (int index = 1; index < 10; index++) {
-            if (board[index]==' ') {
-        		return null;
-            }
-            else if (index == 9) {
-                return "draw";
-            }
-        }
+			if (board[index] == ' ') {
+				return null;
+			} else if (index == 9) {
+				return "draw";
+			}
+		}
 		return null;
 
 	}
@@ -117,40 +167,43 @@ public class TicTacToeGame {
 			for (int nthCombination = 0; nthCombination < combinationOfThreeItems.length; nthCombination++) {
 
 				if (board[winningStates[state][combinationOfThreeItems[nthCombination][0]]] == letter
-				 && board[winningStates[state][combinationOfThreeItems[nthCombination][1]]] == letter
-				 && board[winningStates[state][combinationOfThreeItems[nthCombination][2]]] == ' ') {
+						&& board[winningStates[state][combinationOfThreeItems[nthCombination][1]]] == letter
+						&& board[winningStates[state][combinationOfThreeItems[nthCombination][2]]] == ' ') {
 
 					moves[winningStates[state][combinationOfThreeItems[nthCombination][2]]] = true;
 				}
 			}
 		}
 
-
 	}
+
 	public static void blockingMove() {
 		winningMove(userLetter);
 	}
+
 	public static void nextPossibleMoves() {
-		int nextMoves[] = {1,3,7,9};
+		int nextMoves[] = { 1, 3, 7, 9 };
 		for (int index = 0; index < nextMoves.length; index++) {
-			if(board[index]==' ') {
-				moves[index] = true;
+			if (board[nextMoves[index]] == ' ') {
+				moves[nextMoves[index]] = true;
 			}
 		}
 	}
+
 	public static void nextPossibleCentreMove() {
-		int nextMoves[] = {5};
+		int nextMoves[] = { 5 };
 		for (int index = 0; index < nextMoves.length; index++) {
-			if(board[index]==' ') {
-				moves[index] = true;
+			if (board[nextMoves[index]] == ' ') {
+				moves[nextMoves[index]] = true;
 			}
 		}
 	}
+
 	public static void nextPossibleRemainingMoves() {
-		int nextMoves[] = {2,4,6,8};
+		int nextMoves[] = { 2, 4, 6, 8 };
 		for (int index = 0; index < nextMoves.length; index++) {
-			if(board[index]==' ') {
-				moves[index] = true;
+			if (board[nextMoves[index]] == ' ') {
+				moves[nextMoves[index]] = true;
 			}
 		}
 	}
